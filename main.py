@@ -4,6 +4,8 @@ from utils import LARGURA, ALTURA, FPS
 import cena1
 import cena2
 import cena3
+import cena4  # no topo
+
 
 def main():
     pygame.init()
@@ -41,6 +43,9 @@ def main():
                 elif evento.key == pygame.K_3:
                     cena_atual = 3
                     print("[Cena 3] Ativada")
+                elif evento.key == pygame.K_7:
+                    cena_atual = 4
+                    print("[Cena 4] Ativada")
 
             # Encaminha eventos para a cena ativa
             if cena_atual == 1 and hasattr(cena1, "handle_event"):
@@ -49,6 +54,9 @@ def main():
                 cena2.handle_event(evento)
             elif cena_atual == 3 and hasattr(cena3, "handle_event"):
                 cena3.handle_event(evento)
+            elif cena_atual == 4 and hasattr(cena4, "handle_event"):
+                cena4.handle_event(evento)
+
 
         # Render da cena ativa
         if cena_atual == 1:
@@ -57,6 +65,8 @@ def main():
             cena2.cena2(tela)
         elif cena_atual == 3:
             cena3.cena3(tela)
+        elif cena_atual == 4:
+            cena4.cena4(tela)
 
         pygame.display.flip()
         clock.tick(FPS)

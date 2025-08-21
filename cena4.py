@@ -34,7 +34,7 @@ strobe_on = False
 
 # Controle da animação de faixas
 anim_start_time = None
-anim_duration = 2.0  # segundos para ir de 1 a 10 faixas
+anim_duration = 10.0  # segundos para ir de 1 a 10 faixas
 anim_active = False
 anim_direction = 1  # 1 = subindo (1→10), -1 = descendo (10→1)
 

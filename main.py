@@ -4,7 +4,7 @@ from utils import LARGURA, ALTURA, FPS
 import cena1
 import cena2
 import cena3
-import cena4  # no topo
+import cena4
 
 
 def main():

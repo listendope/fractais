@@ -1,48 +1,66 @@
 import pygame
 import colorsys
 import time
-from utils import LARGURA, ALTURA
 
-# Configurações da fonte e texto
+# =======================
+# Configurações gerais
+# =======================
 FONT_SIZE = 100
-font = pygame.font.SysFont("Arial Black", FONT_SIZE, bold=True)
-text = " DOPE "
-
-# Divide a tela em 5 faixas
-num_faixas = 5
-faixa_altura = ALTURA // num_faixas
-
-# Velocidade do letreiro
-speed = 3
-
-# Offsets para cada faixa
-offsets = [0 for _ in range(num_faixas)]
-
-# Texto base
-text_surface_base = font.render(text, True, (255, 255, 255))
-text_width = text_surface_base.get_width()
-text_height = text_surface_base.get_height()
+TEXTO = " DOPE "
+NUM_FAIXAS = 5
+SPEED = 3
 
 # --- Configuração inicial de BPM e subdivisão ---
-BPM = 128          # valor inicial
-subdivisao = 2     # 1=1 piscada/batida, 2=2 piscadas/batida, 4=4 piscadas/batida
-strobe_interval = 60.0 / (BPM * subdivisao)
+BPM = 130          # valor inicial
+SUBDIVISAO = 2     # 1=1 piscada/batida, 2=2, 4=4 piscadas/batida
+strobe_interval = 60.0 / (BPM * SUBDIVISAO)
+
+# =======================
+# Estado da cena
+# =======================
+# Fonte e superfícies (inicialização preguiçosa)
+_font = None
+_text_surface_base = None
+_text_w = 0
+_text_h = 0
+
+# Offsets para cada faixa
+_offsets = [0 for _ in range(NUM_FAIXAS)]
 
 # Modos
 psy_mode = False
 strobe_mode = False
-hue = 0
+hue = 0.0
 
-# Controle strobe
+# Controle do strobe
 last_strobe_time = time.time()
 strobe_on = False
 
-def update_strobe_interval():
-    """Atualiza o intervalo do strobe baseado no BPM e subdivisão"""
+
+def _ensure_font():
+    """Garante que a fonte e a superfície base estão prontas."""
+    global _font, _text_surface_base, _text_w, _text_h
+    if _font is None:
+        if not pygame.font.get_init():
+            pygame.font.init()  # evita 'font not initialized'
+        _font = pygame.font.SysFont("Arial Black", FONT_SIZE, bold=True)
+        _text_surface_base = _font.render(f" {TEXTO} ", True, (255, 255, 255))
+        _text_w = _text_surface_base.get_width()
+        _text_h = _text_surface_base.get_height()
+
+
+def _update_strobe_interval():
     global strobe_interval
-    strobe_interval = 60.0 / (BPM * subdivisao)
+    strobe_interval = 60.0 / (BPM * SUBDIVISAO)
+
 
 def handle_event(evento, tela=None):
+    """Teclas:
+        Z -> psicodelia on/off
+        X -> strobe on/off
+        ↑ -> BPM +1
+        ↓ -> BPM -1
+    """
     global psy_mode, strobe_mode, BPM
 
     if evento.type == pygame.KEYDOWN:
@@ -56,25 +74,27 @@ def handle_event(evento, tela=None):
 
         elif evento.key == pygame.K_UP:
             BPM += 1
-            update_strobe_interval()
-            print(f"[Cena 4] BPM aumentado para {BPM}")
+            _update_strobe_interval()
+            print(f"[Cena 4] BPM: {BPM}")
 
         elif evento.key == pygame.K_DOWN:
-            if BPM > 1:  # evita BPM zero ou negativo
+            if BPM > 1:
                 BPM -= 1
-                update_strobe_interval()
-                print(f"[Cena 4] BPM diminuído para {BPM}")
+                _update_strobe_interval()
+                print(f"[Cena 4] BPM: {BPM}")
+
 
 def cena4(tela):
+    """Desenha a cena do telão DOPE."""
     global hue, last_strobe_time, strobe_on
 
+    _ensure_font()
+
     largura, altura = tela.get_size()
-    faixa_altura = altura // num_faixas
+    faixa_altura = altura // NUM_FAIXAS
 
-    # Fundo padrão
+    # Fundo (strobe)
     background_color = (0, 0, 0)
-
-    # Strobe
     if strobe_mode:
         now = time.time()
         if now - last_strobe_time >= strobe_interval:
@@ -84,32 +104,30 @@ def cena4(tela):
 
     tela.fill(background_color)
 
-    for i in range(num_faixas):
-        y = i * faixa_altura + (faixa_altura - text_height) // 2
+    # Desenha as 5 faixas
+    for i in range(NUM_FAIXAS):
+        y = i * faixa_altura + (faixa_altura - _text_h) // 2
 
-        # Direção alternada
+        # Direção alternada: 0,2,4 -> direita->esquerda | 1,3 -> esquerda->direita
         direction = -1 if i % 2 == 0 else 1
-        offsets[i] += direction * speed
-        offsets[i] %= text_width
+        _offsets[i] = (_offsets[i] + direction * SPEED) % _text_w
 
         # Cor do texto
         if psy_mode:
             hue = (hue + 0.002) % 1.0
-            r, g, b = [int(c * 255) for c in colorsys.hsv_to_rgb((hue + i*0.15) % 1.0, 1, 1)]
-            text_surface = font.render(text, True, (r, g, b))
+            r, g, b = [int(c * 255) for c in colorsys.hsv_to_rgb((hue + i * 0.15) % 1.0, 1, 1)]
+            text_surface = _font.render(f" {TEXTO} ", True, (r, g, b))
         else:
             if strobe_mode:
-                text_surface = font.render(
-                    text,
-                    True,
-                    (0, 0, 0) if background_color == (255, 255, 255) else (255, 255, 255)
-                )
+                # Inverte cor pra ficar visível no flash branco
+                cor = (0, 0, 0) if background_color == (255, 255, 255) else (255, 255, 255)
+                text_surface = _font.render(f" {TEXTO} ", True, cor)
             else:
-                text_surface = text_surface_base
+                text_surface = _text_surface_base
 
-        # Preenche a faixa
-        for x in (offsets[i], offsets[i] - text_width):
-            pos_x = x
-            while pos_x < largura:
-                tela.blit(text_surface, (pos_x, y))
-                pos_x += text_width
+        # Desenha repetidamente para preencher sem gaps
+        for x0 in (_offsets[i], _offsets[i] - _text_w):
+            x = x0
+            while x < largura:
+                tela.blit(text_surface, (x, y))
+                x += _text_w

@@ -68,7 +68,7 @@ def handle_event(evento):
        Espaço: liga/desliga rastro
        L    : alterna ponto/linha
        W/A/S/D: move o centro (manter pressionado)
-       4/6  : diminui/aumenta half-life do fade
+       q/e  : diminui/aumenta half-life do fade
     """
     global SPEED, STAR_COUNT, TRAIL, LINE, FADE_HALF_LIFE
 
@@ -113,11 +113,11 @@ def handle_event(evento):
         LINE = not LINE
         print(f"[Cena 3] Linhas: {'ATIVADAS' if LINE else 'DESATIVADAS'}")
 
-    elif evento.key == pygame.K_6:
+    elif evento.key == pygame.K_e:
         FADE_HALF_LIFE = min(2.5, FADE_HALF_LIFE + 0.05)
         print(f"[Cena 3] Fade half-life: {FADE_HALF_LIFE:.2f}s (mais persistente)")
 
-    elif evento.key == pygame.K_4:
+    elif evento.key == pygame.K_q:
         FADE_HALF_LIFE = max(0.0, FADE_HALF_LIFE - 0.05)
         print(f"[Cena 3] Fade half-life: {FADE_HALF_LIFE:.2f}s (desaparece mais rápido)")
 

@@ -32,11 +32,13 @@ auto_psy_modulacao = False
 ultimo_auto_mod_tempo = time.time()
 raios_direcao = 1
 espaco_direcao = 1
+glitch_ativo = False
 
 def handle_event(evento):
     """Controles da cena 2 (mesmos do código original)."""
     global auto_psy_modulacao, GLITCH_INTERVALO_MIN, GLITCH_INTERVALO_MAX
     global PSY_RAIOS_QTD, PSY_CIRCULO_ESPACO, proximo_glitch
+    global glitch_ativo
 
     if evento.type != pygame.KEYDOWN:
         return
@@ -45,6 +47,12 @@ def handle_event(evento):
         auto_psy_modulacao = not auto_psy_modulacao
         estado = "ATIVADA" if auto_psy_modulacao else "DESATIVADA"
         print(f"[Cena 2] Auto-modulação {estado} (Raios e Espaçamento).")
+    
+    # Toggle glitch (w)
+    elif evento.key == pygame.K_w:
+        glitch_ativo = not glitch_ativo
+        estado = "ATIVADO" if glitch_ativo else "DESATIVADO"
+        print(f"[Cena 2] Glitch {estado}.")
 
     # ↑ / ↓ ajustam o intervalo do glitch
     elif evento.key == pygame.K_UP:
@@ -73,12 +81,12 @@ def handle_event(evento):
         PSY_RAIOS_QTD = max(PSY_RAIOS_MIN, PSY_RAIOS_QTD - 2)
         print(f"[Cena 2] Raios: {PSY_RAIOS_QTD}")
 
-    # 6 / 4 ajustam espaçamento dos círculos
-    elif evento.key == pygame.K_6:
+    # d / a ajustam espaçamento dos círculos
+    elif evento.key == pygame.K_d:
         PSY_CIRCULO_ESPACO = min(PSY_CIRCULO_ESPACO + 2, PSY_CIRCULO_ESPACO_MAX)
         print(f"[Cena 2] Espaçamento círculos: {PSY_CIRCULO_ESPACO}")
 
-    elif evento.key == pygame.K_4:
+    elif evento.key == pygame.K_a:
         PSY_CIRCULO_ESPACO = max(PSY_CIRCULO_ESPACO - 2, PSY_CIRCULO_ESPACO_MIN)
         print(f"[Cena 2] Espaçamento círculos: {PSY_CIRCULO_ESPACO}")
 
@@ -158,11 +166,12 @@ def cena2(tela):
 
     # 3) Glitch por fatias em intervalos controlados
     now = time.time()
-    if now >= proximo_glitch:
+    if glitch_ativo and now >= proximo_glitch:
         out = aplicar_glitch_slices(out, GLITCH_INTENSIDADE)
         proximo_glitch = agendar_proximo_glitch(
             GLITCH_INTENSIDADE, GLITCH_INTERVALO_MIN, GLITCH_INTERVALO_MAX, GLITCH_INTERVALO_MIN_LIM
         )
+
 
     # 4) Ruído em pequenos blocos
     ruido_qtd = int(20 * GLITCH_INTENSIDADE)

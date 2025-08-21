@@ -52,13 +52,13 @@ def handle_event(evento, tela):
         print(f"[Cena 1] Zoom DIMINUIU: {velocidade_zoom:.3f}")
 
     # Adição de formas no centro (C/Q/T)
-    elif evento.key == pygame.K_c:  # círculo
+    elif evento.key == pygame.K_w:  # círculo
         circulos.append({'raio': 1, 'pos': tuple(centro)})
         print(f"[Cena 1] +Círculo no centro {tuple(centro)} | Total: C={len(circulos)} Q={len(quadrados)} T={len(triangulos)}")
     elif evento.key == pygame.K_q:  # quadrado
         quadrados.append({'lado': 1, 'pos': tuple(centro)})
         print(f"[Cena 1] +Quadrado no centro {tuple(centro)} | Total: C={len(circulos)} Q={len(quadrados)} T={len(triangulos)}")
-    elif evento.key == pygame.K_t:  # triângulo
+    elif evento.key == pygame.K_e:  # triângulo
         triangulos.append({'tamanho': 1, 'pos': tuple(centro)})
         print(f"[Cena 1] +Triângulo no centro {tuple(centro)} | Total: C={len(circulos)} Q={len(quadrados)} T={len(triangulos)}")
 
@@ -69,13 +69,13 @@ def handle_event(evento, tela):
         print(f"[Cena 1] Centro reposicionado aleatoriamente: {tuple(centro)}")
 
     # Rotação (4/5/6)
-    elif evento.key == pygame.K_6:  # horária
+    elif evento.key == pygame.K_d:  # horária
         velocidade_rotacao = velocidade_zoom
         print(f"[Cena 1] Rotação horária: {velocidade_rotacao:.3f} (graus/frame)")
-    elif evento.key == pygame.K_4:  # anti-horária
+    elif evento.key == pygame.K_a:  # anti-horária
         velocidade_rotacao = -velocidade_zoom
         print(f"[Cena 1] Rotação anti-horária: {velocidade_rotacao:.3f} (graus/frame)")
-    elif evento.key == pygame.K_5:  # reset
+    elif evento.key == pygame.K_s:  # reset
         velocidade_rotacao = 0
         angulo_rotacao = 0
         print("[Cena 1] Rotação resetada (0)")

@@ -34,16 +34,16 @@ def main():
 
             elif evento.type == pygame.KEYDOWN:
                 # Troca de cenas (global)
-                if evento.key == pygame.K_1:
+                if evento.key == pygame.K_F1:
                     cena_atual = 1
                     print("[Cena 1] Ativada")
-                elif evento.key == pygame.K_2:
+                elif evento.key == pygame.K_F2:
                     cena_atual = 2
                     print("[Cena 2] Ativada")
-                elif evento.key == pygame.K_3:
+                elif evento.key == pygame.K_F3:
                     cena_atual = 3
                     print("[Cena 3] Ativada")
-                elif evento.key == pygame.K_7:
+                elif evento.key == pygame.K_F4:
                     cena_atual = 4
                     print("[Cena 4] Ativada")
 

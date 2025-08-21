@@ -8,7 +8,7 @@ import time
 FONT_SIZE = 100
 TEXTO = " DOPE "
 NUM_FAIXAS = 5
-SPEED = 3
+SPEED = 1
 
 # --- Configuração inicial de BPM e subdivisão ---
 BPM = 130          # valor inicial

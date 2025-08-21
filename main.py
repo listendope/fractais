@@ -34,10 +34,13 @@ def main():
                 # Troca de cenas (global)
                 if evento.key == pygame.K_1:
                     cena_atual = 1
+                    print("[Cena 1] Ativada")
                 elif evento.key == pygame.K_2:
                     cena_atual = 2
+                    print("[Cena 2] Ativada")
                 elif evento.key == pygame.K_3:
                     cena_atual = 3
+                    print("[Cena 3] Ativada")
 
             # Encaminha eventos para a cena ativa
             if cena_atual == 1 and hasattr(cena1, "handle_event"):

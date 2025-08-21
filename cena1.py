@@ -38,10 +38,10 @@ def handle_event(evento, tela):
     # Troca de cor (setas esquerda/direita)
     if evento.key == pygame.K_RIGHT:
         indice_cor = (indice_cor + 1) % len(CORES)
-        print(f"[Cena 1] Cor → {indice_cor}: {CORES[indice_cor]}")
+        print(f"[Cena 1] Cor -> {indice_cor}: {CORES[indice_cor]}")
     elif evento.key == pygame.K_LEFT:
         indice_cor = (indice_cor - 1) % len(CORES)
-        print(f"[Cena 1] Cor ← {indice_cor}: {CORES[indice_cor]}")
+        print(f"[Cena 1] Cor <- {indice_cor}: {CORES[indice_cor]}")
 
     # Zoom (setas cima/baixo)
     elif evento.key == pygame.K_UP:
@@ -97,7 +97,7 @@ def update_and_draw(tela):
             indice_cor = random.randint(0, len(CORES) - 1)
             ultimo_tempo_cor = tempo_atual
             # Log opcional para ver a troca automática:
-            # print(f"[Cena 1] (Auto) Nova cor: {indice_cor} {CORES[indice_cor]}")
+            print(f"[Cena 1] (Auto) Nova cor: {indice_cor} {CORES[indice_cor]}")
 
         # geração periódica de objetos
         if tempo_atual - ultimo_tempo_objeto >= INTERVALO_GERACAO_OBJETOS:
@@ -105,7 +105,7 @@ def update_and_draw(tela):
             gerar_objeto_aleatorio(circulos, quadrados, triangulos, w, h)
             ultimo_tempo_objeto = tempo_atual
             # Log opcional para ver a geração automática:
-            # print(f"[Cena 1] (Auto) Gerado objeto | Totais: C={len(circulos)} Q={len(quadrados)} T={len(triangulos)}")
+            print(f"[Cena 1] (Auto) Gerado objeto | Totais: C={len(circulos)} Q={len(quadrados)} T={len(triangulos)}")
 
     # fundo e formas
     tela.fill(CORES[indice_cor])

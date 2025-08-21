@@ -5,6 +5,8 @@ import cena1
 import cena2
 import cena3
 import cena4
+import io
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 
 def main():

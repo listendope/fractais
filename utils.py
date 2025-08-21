@@ -7,7 +7,19 @@ import pygame
 # Constantes globais
 LARGURA, ALTURA = 960, 600
 FPS = 240
-CORES = [(255, 0, 0), (0, 255, 0), (0, 0, 255), (255, 255, 0), (128, 0, 128)]
+
+CORES = [
+    (255, 0, 0),      # vermelho
+    (0, 255, 0),      # verde
+    (0, 0, 255),      # azul
+    (255, 255, 0),    # amarelo
+    (128, 0, 128),    # roxo
+    (255, 165, 0),    # laranja
+    (0, 255, 255),    # ciano
+    (255, 192, 203),  # rosa
+    (0, 0, 0)         # preto
+]
+
 VELOCIDADE_TROCA_COR = 0.2
 INTERVALO_GERACAO_OBJETOS = 0.5
 

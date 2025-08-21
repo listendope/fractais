@@ -47,7 +47,8 @@ def main():
                 cena1.handle_event(evento, tela)
             elif cena_atual == 2 and hasattr(cena2, "handle_event"):
                 cena2.handle_event(evento)
-            # Cena 3 não tem controles extras no momento
+            elif cena_atual == 3 and hasattr(cena3, "handle_event"):
+                cena3.handle_event(evento)
 
         # Render da cena ativa
         if cena_atual == 1:

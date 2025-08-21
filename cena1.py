@@ -68,7 +68,7 @@ def handle_event(evento, tela):
         centro = [random.randint(0, w), random.randint(0, h)]
         print(f"[Cena 1] Centro reposicionado aleatoriamente: {tuple(centro)}")
 
-    # Rotação (4/5/6)
+    # Rotação (a/s/d)
     elif evento.key == pygame.K_d:  # horária
         velocidade_rotacao = velocidade_zoom
         print(f"[Cena 1] Rotação horária: {velocidade_rotacao:.3f} (graus/frame)")

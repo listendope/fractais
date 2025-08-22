@@ -25,7 +25,7 @@ Este projeto é um visualizador interativo para apresentações de DJ, desenvolv
   - **Cena 2:** Psicodelia fractal – anéis e raios coloridos, efeitos de glitch, RGB split e auto-modulação.
   - **Cena 3:** Starfield 3D – estrelas em perspectiva, rastro com fade, controle de velocidade, quantidade e centro móvel.
   - **Cena 4:** Texto em faixas – texto "DOPE" repetido, rotação, animação de faixas, strobe sincronizado e modo psicodélico.
-  - **Cena 5:** Texto circular 3D – texto "EPOD." em círculo, rotação, pulsação, efeitos de cor e strobe.
+  - **Cena 5:** Texto circular 3D – texto "DOPE." em círculo, rotação, pulsação, efeitos de cor e strobe.
 
 - **Efeitos visuais avançados**:
   - Glitch em fatias e RGB split (Cena 2)

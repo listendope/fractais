@@ -1,102 +1,116 @@
-# Telão DJ - Visualizador Interativo com Pygame
+# Telão DJ – Visualizador Interativo com Pygame
 
-Este projeto é um sistema de visualização interativa para apresentações de DJ, desenvolvido em Python usando **Pygame**. Ele apresenta múltiplas cenas visuais, efeitos psicodélicos, strobe, starfield e renderização 3D de texto, com controles via teclado para manipular animações em tempo real.
+Este projeto é um visualizador interativo para apresentações de DJ, desenvolvido em Python com **Pygame**. Ele oferece múltiplas cenas visuais dinâmicas, efeitos psicodélicos, animações de texto, starfield 3D e controles em tempo real via teclado, ideal para projeções em festas, eventos ou performances ao vivo.
 
 ---
 
 ## Estrutura do Projeto
 
-| Arquivo | Descrição |
-|---------|-----------|
-| `main.py` | Arquivo principal que inicializa o Pygame, gerencia troca de cenas, loop principal e eventos de teclado. |
-| `cena1.py` | Cena com efeitos de partículas geométricas (círculos, quadrados, triângulos) que crescem e rotacionam. |
-| `cena2.py` | Cena com fractais psicodélicos e efeitos de zoom e rotação (inspirada em fractais). |
-| `cena3.py` | Starfield 3D com rastro, profundidade e centro móvel via WASD. Possui controle de velocidade, quantidade de estrelas e fade. |
-| `cena4.py` | Texto psicodélico repetido em faixas horizontais, com rotação e strobe sincronizado com BPM. Permite alternar modo psicodélico e animação de faixas. |
-| `cena5.py` | Texto circular 3D (“DOPE.”) com rotação, pulsação global, modo psicodélico e strobe. Letras são renderizadas com profundidade e escala variável. |
-| `utils.py` | Funções auxiliares compartilhadas entre cenas: rotação de pontos, conversão HSV→RGB, desenho de formas, geração de objetos aleatórios e efeitos de glitch/RGB split. |
+| Arquivo      | Descrição                                                                                                                        |
+|--------------|----------------------------------------------------------------------------------------------------------------------------------|
+| `main.py`    | Loop principal do programa. Inicializa o Pygame, gerencia eventos, troca de cenas e renderização.                               |
+| `cena1.py`   | Cena de partículas geométricas (círculos, quadrados, triângulos) que crescem, rotacionam e mudam de cor.                        |
+| `cena2.py`   | Cena psicodélica com anéis concêntricos e raios coloridos, efeitos de glitch, RGB split e auto-modulação animada.               |
+| `cena3.py`   | Starfield 3D: campo de estrelas com profundidade, rastro, movimento do centro via WASD e ajuste de velocidade/fade.             |
+| `cena4.py`   | Texto "DOPE" em faixas horizontais, com rotação, animação de deslocamento, strobe sincronizado com BPM e modo psicodélico.      |
+| `cena5.py`   | Texto circular 3D ("EPOD.") com rotação, pulsação global, efeitos de cor psicodélica e strobe.                                  |
+| `utils.py`   | Funções utilitárias: rotação de pontos, conversão HSV→RGB, desenho de formas, geração de objetos e efeitos visuais (glitch etc).|
 
 ---
 
 ## Funcionalidades Principais
 
-- Múltiplas cenas visuais com diferentes estilos:
-  - **Geometria animada** (`cena1.py`)
-  - **Fractais e psicodelia** (`cena2.py`)
-  - **Starfield 3D** (`cena3.py`)
-  - **Texto em faixas e strobe** (`cena4.py`)
-  - **Texto circular 3D com profundidade** (`cena5.py`)
-- Controles via teclado:
-  - **Cena 3 (Starfield)**: ↑/↓ velocidade, ←/→ quantidade de estrelas, W/A/S/D movimento, espaço liga/desliga rastro, L alterna linha/ponto.
-  - **Cena 4 (Texto faixas)**: Z liga/desliga psy-mode, X liga/desliga strobe, ↑/↓ ajusta BPM, ←/→ altera número de faixas, A ativa/desativa animação de faixas, Q/E rotaciona texto.
-  - **Cena 5 (Texto circular)**: Z liga/desliga psy-mode, X liga/desliga strobe, ↑/↓ ajusta BPM, ←/→ altera raio base, C liga/desliga pulsação global.
-- Efeitos visuais avançados:
-  - Fade com half-life em starfield
-  - RGB split e glitch slices
+- **Múltiplas cenas visuais**:
+  - **Cena 1:** Geometria animada – círculos, quadrados e triângulos que crescem, rotacionam e mudam de cor.
+  - **Cena 2:** Psicodelia fractal – anéis e raios coloridos, efeitos de glitch, RGB split e auto-modulação.
+  - **Cena 3:** Starfield 3D – estrelas em perspectiva, rastro com fade, controle de velocidade, quantidade e centro móvel.
+  - **Cena 4:** Texto em faixas – texto "DOPE" repetido, rotação, animação de faixas, strobe sincronizado e modo psicodélico.
+  - **Cena 5:** Texto circular 3D – texto "EPOD." em círculo, rotação, pulsação, efeitos de cor e strobe.
+
+- **Efeitos visuais avançados**:
+  - Glitch em fatias e RGB split (Cena 2)
+  - Fade com half-life ajustável (Cena 3)
+  - Strobe sincronizado por BPM (Cenas 4 e 5)
   - Pulsação e rotação de textos e formas
-  - Animações interpoladas de faixas de texto
+  - Animação interpolada de faixas de texto
+
+- **Controles via teclado** (em tempo real):
+  - Troca de cenas: F1–F5
+  - Cada cena possui controles específicos para manipular parâmetros visuais, ativar/desativar efeitos e animar elementos.
 
 ---
 
-## Dependências
+## Controles de Teclado
 
-- Python 3.10+
-- [Pygame](https://www.pygame.org/)
+### Troca de Cenas
+- **F1**: Cena 1 (Geometria)
+- **F2**: Cena 2 (Psicodelia/Glitch)
+- **F3**: Cena 3 (Starfield)
+- **F4**: Cena 4 (Texto em faixas)
+- **F5**: Cena 5 (Texto circular 3D)
 
-Instalação do Pygame via pip:
+### Cena 1 – Geometria Animada
+- **← / →**: Troca de cor de fundo
+- **↑ / ↓**: Aumenta/diminui zoom das formas
+- **W**: Adiciona círculo no centro
+- **Q**: Adiciona quadrado no centro
+- **E**: Adiciona triângulo no centro
+- **Espaço**: Move o centro para posição aleatória
+- **A / D**: Rotação anti-horária/horária
+- **S**: Reseta rotação
+- **R**: Ativa/desativa modo aleatório (cor e objetos automáticos)
 
+### Cena 2 – Psicodelia/Glitch
+- **R**: Ativa/desativa auto-modulação de raios e espaçamento
+- **W**: Ativa/desativa efeito glitch
+- **↑ / ↓**: Aumenta/diminui intervalo do glitch
+- **← / →**: Diminui/aumenta quantidade de raios
+- **A / D**: Diminui/aumenta espaçamento dos círculos
+
+### Cena 3 – Starfield 3D
+- **↑ / ↓**: Aumenta/diminui velocidade das estrelas
+- **← / →**: Diminui/aumenta quantidade de estrelas
+- **W/A/S/D**: Move o centro do campo de estrelas
+- **Espaço**: Liga/desliga rastro (fade)
+- **L**: Alterna entre linhas e pontos
+- **R**: Reseta o campo de estrelas
+- **Q / E**: Diminui/aumenta o half-life do fade
+
+### Cena 4 – Texto em Faixas
+- **Z**: Ativa/desativa modo psicodélico (cores animadas)
+- **X**: Ativa/desativa strobe sincronizado com BPM
+- **↑ / ↓**: Aumenta/diminui BPM do strobe
+- **← / →**: Diminui/aumenta número de faixas de texto
+- **A**: Ativa/desativa animação automática do número de faixas
+- **Q / E**: Rotação anti-horária/horária do texto
+- **W**: Reseta rotação
+
+### Cena 5 – Texto Circular 3D
+- **Z**: Ativa/desativa modo psicodélico (cores animadas)
+- **X**: Ativa/desativa strobe sincronizado com BPM
+- **↑ / ↓**: Aumenta/diminui BPM do strobe
+- **← / →**: Diminui/aumenta raio base do círculo
+- **C**: Ativa/desativa pulsação global do círculo
+
+---
+
+## Instalação e Execução
+
+**Pré-requisitos:**
+- Python 3.10 ou superior
+- [Pygame](https://www.pygame.org/) instalado
+
+**Instale o Pygame:**
 ```bash
 pip install pygame
 ```
 
----
-
-## Como Executar
-
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/SEU_USUARIO/telao-dj.git
-cd telao-dj
-```
-
-2. Execute o arquivo principal:
-
+**Execute o projeto:**
 ```bash
 python main.py
 ```
 
-3. Durante a execução, utilize as teclas para navegar entre as cenas e interagir com os efeitos visuais.
-
----
-
-## Estrutura de Eventos e Controles
-
-O `main.py` captura todos os eventos do teclado e repassa para a cena ativa:
-
-- **Cena 3 (Starfield)**  
-  - ↑ / ↓ → aumenta/diminui velocidade  
-  - ← / → → aumenta/diminui quantidade de estrelas  
-  - W/A/S/D → move o centro da tela  
-  - Espaço → liga/desliga rastro  
-  - L → alterna linha/ponto  
-  - R → reseta o campo de estrelas
-
-- **Cena 4 (Texto em faixas)**  
-  - Z → ativa/desativa modo psicodélico  
-  - X → ativa/desativa strobe  
-  - ↑ / ↓ → altera BPM do strobe  
-  - ← / → → altera número de faixas  
-  - A → ativa/desativa animação de faixas  
-  - Q/E → rotaciona o texto  
-  - W → reseta rotação
-
-- **Cena 5 (Texto circular)**  
-  - Z → ativa/desativa modo psicodélico  
-  - X → ativa/desativa strobe  
-  - ↑ / ↓ → altera BPM  
-  - ← / → → ajusta raio base do círculo  
-  - C → ativa/desativa pulsação global
+Durante a execução, utilize as teclas para navegar entre as cenas e interagir com os efeitos visuais.
 
 ---
 

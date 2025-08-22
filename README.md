@@ -47,3 +47,71 @@ Instalação do Pygame via pip:
 
 ```bash
 pip install pygame
+```
+
+---
+
+## Como Executar
+
+1. Clone o repositório:
+
+```bash
+git clone https://github.com/SEU_USUARIO/telao-dj.git
+cd telao-dj
+```
+
+2. Execute o arquivo principal:
+
+```bash
+python main.py
+```
+
+3. Durante a execução, utilize as teclas para navegar entre as cenas e interagir com os efeitos visuais.
+
+---
+
+## Estrutura de Eventos e Controles
+
+O `main.py` captura todos os eventos do teclado e repassa para a cena ativa:
+
+- **Cena 3 (Starfield)**  
+  - ↑ / ↓ → aumenta/diminui velocidade  
+  - ← / → → aumenta/diminui quantidade de estrelas  
+  - W/A/S/D → move o centro da tela  
+  - Espaço → liga/desliga rastro  
+  - L → alterna linha/ponto  
+  - R → reseta o campo de estrelas
+
+- **Cena 4 (Texto em faixas)**  
+  - Z → ativa/desativa modo psicodélico  
+  - X → ativa/desativa strobe  
+  - ↑ / ↓ → altera BPM do strobe  
+  - ← / → → altera número de faixas  
+  - A → ativa/desativa animação de faixas  
+  - Q/E → rotaciona o texto  
+  - W → reseta rotação
+
+- **Cena 5 (Texto circular)**  
+  - Z → ativa/desativa modo psicodélico  
+  - X → ativa/desativa strobe  
+  - ↑ / ↓ → altera BPM  
+  - ← / → → ajusta raio base do círculo  
+  - C → ativa/desativa pulsação global
+
+---
+
+## Contribuição
+
+Contribuições são bem-vindas!  
+- Novos efeitos visuais ou animações  
+- Otimizações de desempenho  
+- Novas cenas interativas  
+
+Faça um fork, crie uma branch, adicione suas melhorias e abra um pull request.
+
+---
+
+## Licença
+
+Este projeto está licenciado sob a **MIT License**. Sinta-se à vontade para usar, modificar e distribuir.
+

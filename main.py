@@ -1,13 +1,10 @@
 import pygame
 import sys
 from utils import LARGURA, ALTURA, FPS
-import cena1
-import cena2
-import cena3
-import cena4
+import cena1, cena2, cena3, cena4, cena5
 import io
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
+sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
 
 def main():
     pygame.init()
@@ -33,6 +30,8 @@ def main():
                 # Atualiza centro da cena 1 quando a janela for redimensionada
                 if cena_atual == 1 and hasattr(cena1, "init_scene"):
                     cena1.init_scene(evento.w, evento.h)
+                elif cena_atual == 5 and hasattr(cena5, "init_scene"):
+                    cena5.init_scene(evento.w, evento.h)
 
             elif evento.type == pygame.KEYDOWN:
                 # Troca de cenas (global)
@@ -48,6 +47,9 @@ def main():
                 elif evento.key == pygame.K_F4:
                     cena_atual = 4
                     print("[Cena 4] Ativada")
+                elif evento.key == pygame.K_F5:  # <-- nova tecla para cena5
+                    cena_atual = 5
+                    print("[Cena 5] Ativada")
 
             # Encaminha eventos para a cena ativa
             if cena_atual == 1 and hasattr(cena1, "handle_event"):
@@ -58,7 +60,8 @@ def main():
                 cena3.handle_event(evento)
             elif cena_atual == 4 and hasattr(cena4, "handle_event"):
                 cena4.handle_event(evento)
-
+            elif cena_atual == 5 and hasattr(cena5, "handle_event"):
+                cena5.handle_event(evento, tela)
 
         # Render da cena ativa
         if cena_atual == 1:
@@ -69,6 +72,8 @@ def main():
             cena3.cena3(tela)
         elif cena_atual == 4:
             cena4.cena4(tela)
+        elif cena_atual == 5:
+            cena5.update_and_draw(tela)  
 
         pygame.display.flip()
         clock.tick(FPS)

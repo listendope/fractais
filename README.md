@@ -13,7 +13,7 @@ Este projeto é um sistema de visualização interativa para apresentações de 
 | `cena2.py` | Cena com fractais psicodélicos e efeitos de zoom e rotação (inspirada em fractais). |
 | `cena3.py` | Starfield 3D com rastro, profundidade e centro móvel via WASD. Possui controle de velocidade, quantidade de estrelas e fade. |
 | `cena4.py` | Texto psicodélico repetido em faixas horizontais, com rotação e strobe sincronizado com BPM. Permite alternar modo psicodélico e animação de faixas. |
-| `cena5.py` | Texto circular 3D (“EPOD.”) com rotação, pulsação global, modo psicodélico e strobe. Letras são renderizadas com profundidade e escala variável. |
+| `cena5.py` | Texto circular 3D (“DOPE.”) com rotação, pulsação global, modo psicodélico e strobe. Letras são renderizadas com profundidade e escala variável. |
 | `utils.py` | Funções auxiliares compartilhadas entre cenas: rotação de pontos, conversão HSV→RGB, desenho de formas, geração de objetos aleatórios e efeitos de glitch/RGB split. |
 
 ---

@@ -4,7 +4,9 @@ import time
 import math
 from utils import hsv_para_rgb, aplicar_rgb_split, aplicar_glitch_slices, agendar_proximo_glitch
 
-# ----- Parâmetros e limites -----
+# -----------------------------
+# Parâmetros gerais da cena 2
+# -----------------------------
 GLITCH_INTENSIDADE = 0.80
 RGB_SPLIT_PX = 3
 GLITCH_INTERVALO_MIN = 0.4
@@ -14,6 +16,7 @@ PSY_CIRCULO_ESPACO = 28
 PSY_ARCO_RAIOS = 18
 PSY_RAIOS_QTD = 24
 
+# Limites para modulação
 GLITCH_INTERVALO_MIN_LIM = 0.01
 GLITCH_INTERVALO_MAX_LIM = 2.00
 PSY_RAIOS_MIN = 2
@@ -21,11 +24,14 @@ PSY_RAIOS_MAX = 200
 PSY_CIRCULO_ESPACO_MIN = 2
 PSY_CIRCULO_ESPACO_MAX = 80
 
+# Passos automáticos para auto-modulação
 AUTO_MOD_INTERVALO = 0.05
 AUTO_RAIOS_STEP = 2
 AUTO_ESPACO_STEP = 1
 
-# ----- Estado da Cena 2 -----
+# -----------------------------
+# Estado global da Cena 2
+# -----------------------------
 tempo_base_cena2 = time.time()
 proximo_glitch = time.time() + random.uniform(GLITCH_INTERVALO_MIN, GLITCH_INTERVALO_MAX)
 auto_psy_modulacao = False
@@ -34,27 +40,39 @@ raios_direcao = 1
 espaco_direcao = 1
 glitch_ativo = False
 
+
+# -----------------------------
+# Função de tratamento de eventos
+# -----------------------------
 def handle_event(evento):
-    """Controles da cena 2 (mesmos do código original)."""
+    """
+    Processa os eventos da cena 2:
+    - R: alterna auto-modulação de raios/espacamento
+    - W: alterna efeito glitch
+    - ↑/↓: ajusta intervalo do glitch
+    - ←/→: ajusta quantidade de raios
+    - A/D: ajusta espaçamento dos círculos
+    """
     global auto_psy_modulacao, GLITCH_INTERVALO_MIN, GLITCH_INTERVALO_MAX
     global PSY_RAIOS_QTD, PSY_CIRCULO_ESPACO, proximo_glitch
     global glitch_ativo
 
     if evento.type != pygame.KEYDOWN:
         return
-    # Toggle auto modulação (R)
+
+    # Auto-modulação
     if evento.key == pygame.K_r:
         auto_psy_modulacao = not auto_psy_modulacao
         estado = "ATIVADA" if auto_psy_modulacao else "DESATIVADA"
         print(f"[Cena 2] Auto-modulação {estado} (Raios e Espaçamento).")
     
-    # Toggle glitch (w)
+    # Toggle glitch
     elif evento.key == pygame.K_w:
         glitch_ativo = not glitch_ativo
         estado = "ATIVADO" if glitch_ativo else "DESATIVADO"
         print(f"[Cena 2] Glitch {estado}.")
 
-    # ↑ / ↓ ajustam o intervalo do glitch
+    # Ajuste intervalo glitch
     elif evento.key == pygame.K_UP:
         GLITCH_INTERVALO_MIN = min(GLITCH_INTERVALO_MAX_LIM, GLITCH_INTERVALO_MIN + 0.01)
         GLITCH_INTERVALO_MAX = min(GLITCH_INTERVALO_MAX_LIM, GLITCH_INTERVALO_MAX + 0.02)
@@ -72,7 +90,7 @@ def handle_event(evento):
         )
         print(f"[Cena 2] Intervalo glitch REDUZIDO: {GLITCH_INTERVALO_MIN:.2f} - {GLITCH_INTERVALO_MAX:.2f}")
 
-    # ← / → ajustam a quantidade de raios
+    # Ajuste quantidade de raios
     elif evento.key == pygame.K_RIGHT:
         PSY_RAIOS_QTD = min(PSY_RAIOS_MAX, PSY_RAIOS_QTD + 2)
         print(f"[Cena 2] Raios: {PSY_RAIOS_QTD}")
@@ -81,7 +99,7 @@ def handle_event(evento):
         PSY_RAIOS_QTD = max(PSY_RAIOS_MIN, PSY_RAIOS_QTD - 2)
         print(f"[Cena 2] Raios: {PSY_RAIOS_QTD}")
 
-    # d / a ajustam espaçamento dos círculos
+    # Ajuste espaçamento dos círculos
     elif evento.key == pygame.K_d:
         PSY_CIRCULO_ESPACO = min(PSY_CIRCULO_ESPACO + 2, PSY_CIRCULO_ESPACO_MAX)
         print(f"[Cena 2] Espaçamento círculos: {PSY_CIRCULO_ESPACO}")
@@ -90,20 +108,27 @@ def handle_event(evento):
         PSY_CIRCULO_ESPACO = max(PSY_CIRCULO_ESPACO - 2, PSY_CIRCULO_ESPACO_MIN)
         print(f"[Cena 2] Espaçamento círculos: {PSY_CIRCULO_ESPACO}")
 
+
+# -----------------------------
+# Função de construção da superfície psicodélica
+# -----------------------------
 def construir_psicodelia_surface(w, h, t):
-    """Anéis concêntricos + raios girando com variação HSV."""
+    """
+    Cria superfície com anéis concêntricos e raios girando
+    com variação de cores HSV.
+    """
     surf = pygame.Surface((w, h), pygame.SRCALPHA).convert_alpha()
     cx, cy = w // 2, h // 2
 
-    # Rastro (fade)
+    # Aplicar rastro (fade)
     fade = pygame.Surface((w, h), pygame.SRCALPHA)
     fade.fill((0, 0, 0, 60))
     surf.blit(fade, (0, 0))
 
-    # Espaçamento limitado
+    # Limitar espaçamento
     espacamento = max(PSY_CIRCULO_ESPACO_MIN, min(PSY_CIRCULO_ESPACO, PSY_CIRCULO_ESPACO_MAX))
 
-    # Anéis
+    # Desenhar anéis concêntricos
     max_r = int(math.hypot(w, h) / 2) + 40
     base_h = (t * 0.12) % 1.0
     for r in range(espacamento, max_r, espacamento):
@@ -111,8 +136,8 @@ def construir_psicodelia_surface(w, h, t):
         cor = hsv_para_rgb(hue, 1.0, 1.0)
         pygame.draw.circle(surf, (*cor, 130), (cx, cy), r, PSY_ARCO_RAIOS)
 
-    # Raios
-    ang_base = t * 60  # graus/seg
+    # Desenhar raios
+    ang_base = t * 60  # graus por segundo
     raio_max = max(w, h)
     qnt = max(PSY_RAIOS_MIN, min(PSY_RAIOS_QTD, PSY_RAIOS_MAX))
     for i in range(qnt):
@@ -126,18 +151,29 @@ def construir_psicodelia_surface(w, h, t):
 
     return surf
 
+
+# -----------------------------
+# Render principal da cena 2
+# -----------------------------
 def cena2(tela):
-    """Render principal da cena 2 (inclui auto-modulação, split RGB, glitch e ruído)."""
+    """
+    Renderiza a cena 2:
+    - Base psicodélica
+    - Split RGB
+    - Glitch em fatias
+    - Ruído aleatório
+    - Auto-modulação (R)
+    """
     global proximo_glitch, ultimo_auto_mod_tempo, PSY_RAIOS_QTD, PSY_CIRCULO_ESPACO
     global raios_direcao, espaco_direcao
 
     w, h = tela.get_size()
     t = time.time() - tempo_base_cena2
 
-    # --- Auto-modulação (tecla R) ---
+    # --- Auto-modulação ---
     agora = time.time()
     if auto_psy_modulacao and (agora - ultimo_auto_mod_tempo) >= AUTO_MOD_INTERVALO:
-        # Raios
+        # Modulação de raios
         PSY_RAIOS_QTD += AUTO_RAIOS_STEP * raios_direcao
         if PSY_RAIOS_QTD >= PSY_RAIOS_MAX:
             PSY_RAIOS_QTD = PSY_RAIOS_MAX
@@ -146,7 +182,7 @@ def cena2(tela):
             PSY_RAIOS_QTD = PSY_RAIOS_MIN
             raios_direcao = 1
 
-        # Espaçamento dos círculos
+        # Modulação do espaçamento dos círculos
         PSY_CIRCULO_ESPACO += AUTO_ESPACO_STEP * espaco_direcao
         if PSY_CIRCULO_ESPACO >= PSY_CIRCULO_ESPACO_MAX:
             PSY_CIRCULO_ESPACO = PSY_CIRCULO_ESPACO_MAX
@@ -157,14 +193,14 @@ def cena2(tela):
 
         ultimo_auto_mod_tempo = agora
 
-    # 1) Base psicodélica
+    # --- Construção da base psicodélica ---
     base = construir_psicodelia_surface(w, h, t)
 
-    # 2) RGB split
+    # --- Aplicar RGB split ---
     split_px = max(1, int(RGB_SPLIT_PX * (0.6 + 0.8 * GLITCH_INTENSIDADE)))
     out = aplicar_rgb_split(base, split_px)
 
-    # 3) Glitch por fatias em intervalos controlados
+    # --- Aplicar glitch em fatias ---
     now = time.time()
     if glitch_ativo and now >= proximo_glitch:
         out = aplicar_glitch_slices(out, GLITCH_INTENSIDADE)
@@ -172,8 +208,7 @@ def cena2(tela):
             GLITCH_INTENSIDADE, GLITCH_INTERVALO_MIN, GLITCH_INTERVALO_MAX, GLITCH_INTERVALO_MIN_LIM
         )
 
-
-    # 4) Ruído em pequenos blocos
+    # --- Adicionar ruído aleatório ---
     ruido_qtd = int(20 * GLITCH_INTENSIDADE)
     for _ in range(ruido_qtd):
         if random.random() < 0.15 + 0.25 * GLITCH_INTENSIDADE:
@@ -181,8 +216,14 @@ def cena2(tela):
             rh = random.randint(2, 12)
             rx = random.randint(0, w - rw)
             ry = random.randint(0, h - rh)
-            cor = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255), random.randint(30, 90))
+            cor = (
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(0, 255),
+                random.randint(30, 90),
+            )
             pygame.draw.rect(out, cor, (rx, ry, rw, rh))
 
+    # Render final na tela
     tela.fill((0, 0, 0))
     tela.blit(out, (0, 0))

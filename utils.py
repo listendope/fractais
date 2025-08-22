@@ -4,7 +4,9 @@ import time
 import colorsys
 import pygame
 
-# Constantes globais
+# =========================
+# Constantes gerais
+# =========================
 LARGURA, ALTURA = 960, 600
 FPS = 240
 
@@ -23,22 +25,32 @@ CORES = [
 VELOCIDADE_TROCA_COR = 0.2
 INTERVALO_GERACAO_OBJETOS = 0.5
 
+# =========================
 # Funções auxiliares
+# =========================
 def rotacionar_ponto(x, y, cx, cy, angulo):
+    """Rotaciona um ponto (x, y) em torno do centro (cx, cy) por um ângulo em graus."""
     rad = math.radians(angulo)
     cos_a, sin_a = math.cos(rad), math.sin(rad)
     dx, dy = x - cx, y - cy
-    return (dx * cos_a - dy * sin_a + cx, dx * sin_a + dy * cos_a + cy)
+    return dx * cos_a - dy * sin_a + cx, dx * sin_a + dy * cos_a + cy
 
 def hsv_para_rgb(h, s, v):
+    """Converte valores HSV em RGB (0-255)."""
     r, g, b = colorsys.hsv_to_rgb(h, s, v)
-    return (int(r * 255), int(g * 255), int(b * 255))
+    return int(r*255), int(g*255), int(b*255)
 
+# =========================
+# Desenho de formas
+# =========================
 def desenhar_formas(tela, circulos, quadrados, triangulos, velocidade_zoom, angulo_rotacao):
+    """Desenha e atualiza objetos geométricos com crescimento e rotação."""
+    # Círculos
     for c in circulos:
         pygame.draw.circle(tela, (255, 255, 255), c['pos'], int(c['raio']), 2)
         c['raio'] += velocidade_zoom
 
+    # Quadrados
     for q in quadrados:
         lado = int(q['lado'])
         x, y = q['pos']
@@ -48,6 +60,7 @@ def desenhar_formas(tela, circulos, quadrados, triangulos, velocidade_zoom, angu
         pygame.draw.polygon(tela, (255, 255, 255), pontos_rot, 2)
         q['lado'] += velocidade_zoom
 
+    # Triângulos
     for t in triangulos:
         tam = int(t['tamanho'])
         x, y = t['pos']
@@ -57,6 +70,7 @@ def desenhar_formas(tela, circulos, quadrados, triangulos, velocidade_zoom, angu
         t['tamanho'] += velocidade_zoom
 
 def gerar_objeto_aleatorio(circulos, quadrados, triangulos, largura, altura):
+    """Gera um objeto aleatório (círculo, quadrado ou triângulo) em uma posição aleatória."""
     tipo = random.choice(['c', 'q', 't'])
     pos = (random.randint(0, largura), random.randint(0, altura))
     if tipo == 'c':
@@ -66,29 +80,34 @@ def gerar_objeto_aleatorio(circulos, quadrados, triangulos, largura, altura):
     elif tipo == 't':
         triangulos.append({'tamanho': 1, 'pos': pos})
 
+# =========================
+# Efeitos visuais
+# =========================
 def aplicar_rgb_split(base_surf, split_px):
+    """Aplica efeito de deslocamento RGB em uma superfície."""
     w, h = base_surf.get_size()
     out = pygame.Surface((w, h), pygame.SRCALPHA).convert_alpha()
     out.fill((0, 0, 0, 255))
 
-    r_s = base_surf.copy()
-    g_s = base_surf.copy()
-    b_s = base_surf.copy()
+    # Cria camadas de cor
+    r_s, g_s, b_s = base_surf.copy(), base_surf.copy(), base_surf.copy()
+    r_s.fill((255,0,0), special_flags=pygame.BLEND_MULT)
+    g_s.fill((0,255,0), special_flags=pygame.BLEND_MULT)
+    b_s.fill((0,0,255), special_flags=pygame.BLEND_MULT)
 
-    r_s.fill((255, 0, 0), special_flags=pygame.BLEND_MULT)
-    g_s.fill((0, 255, 0), special_flags=pygame.BLEND_MULT)
-    b_s.fill((0, 0, 255), special_flags=pygame.BLEND_MULT)
-
+    # Deslocamentos aleatórios
     ox = split_px + random.randint(-1, 1)
     oy = random.randint(-1, 1)
 
+    # Combina camadas
     out.blit(r_s, (-ox, 0), special_flags=pygame.BLEND_ADD)
-    out.blit(g_s, (0, oy),   special_flags=pygame.BLEND_ADD)
+    out.blit(g_s, (0, oy), special_flags=pygame.BLEND_ADD)
     out.blit(b_s, (ox, -oy), special_flags=pygame.BLEND_ADD)
 
     return out
 
 def aplicar_glitch_slices(surf, intensidade):
+    """Aplica efeito de glitch em fatias horizontais da superfície."""
     w, h = surf.get_size()
     slices = max(2, int(6 * intensidade) + random.randint(0, 4))
     max_offset = int(40 * intensidade) + 6
@@ -103,6 +122,7 @@ def aplicar_glitch_slices(surf, intensidade):
         faixa = surf.subsurface(rect).copy()
         surf.blit(faixa, (dx, y))
 
+        # Adiciona overlay colorido aleatório
         if random.random() < 0.3 + 0.4 * intensidade:
             overlay = pygame.Surface((w, faixa_h), pygame.SRCALPHA)
             overlay.fill((random.randint(150, 255),
@@ -113,6 +133,7 @@ def aplicar_glitch_slices(surf, intensidade):
     return surf
 
 def agendar_proximo_glitch(intensidade, intervalo_min, intervalo_max, intervalo_min_lim):
-    fator = (0.5 + intensidade)
+    """Calcula o timestamp para o próximo glitch, baseado em intensidade."""
+    fator = 0.5 + intensidade
     intervalo = random.uniform(intervalo_min, intervalo_max) / fator
     return time.time() + max(intervalo_min_lim, intervalo)
